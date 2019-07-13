@@ -1,0 +1,26 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control -Harry
+# Compiled files
+*.tfstate
+*.tfstate.backup
+*.retry
+*.swap
+*.bak
+*.terraform*
+# This is vars commented temporarily purpose
+*.tfvars
+
+# Module directory
+.terraform/*
+.cache/
+.ssh/
+bin/*
+tmp/*
+states/*
+*/.terraform/*
+*temp*.sh
+/venv
+.venv
+.DS_Store
+*/.DS_Store
+secrets/ssh_config
+secrets/*_deploy_key*
