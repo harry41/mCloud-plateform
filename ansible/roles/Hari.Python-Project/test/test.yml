@@ -1,0 +1,25 @@
+---
+- name: Install Python Project - Nginx+Gunicorn+Postgresql+Supervisor Environment
+  hosts: web
+  #user: ubuntu
+  become: true
+  vars:
+    dependant_repo_url:
+      - ppa:ondrej/php
+    install_dependant_packages:
+      - software-properties-common
+      - nginx
+      - postgresql
+      - postgresql-contrib
+      - python-pip
+      - python-dev
+      - build-essential
+      - libpq-dev
+      - virtualenv
+      - virtualenvwrapper
+      - supervisor
+
+
+  roles:
+      - hari.dependency
+      #- update-ubuntu

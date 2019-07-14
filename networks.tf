@@ -1,11 +1,9 @@
-# Create a VPC to launch our instances into
 resource "aws_vpc" "default" {
   cidr_block           = "${var.vpc_cidr}"
   enable_dns_support   = true
   enable_dns_hostnames = true
 }
 
-# Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
 
@@ -14,7 +12,6 @@ resource "aws_internet_gateway" "default" {
   }
 }
 
-# Grant the VPC internet access on its main route table
 resource "aws_route" "internet_access" {
   route_table_id         = "${aws_vpc.default.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
@@ -49,13 +46,11 @@ resource "aws_route" "private_route" {
   # nat_gateway_id         = "${aws_instance.nat.id}"
 }
 
-# Associate subnet public_subnet_eu_west_1a to public route table
 resource "aws_route_table_association" "public_subnet_association" {
   subnet_id      = "${aws_subnet.public.id}"
   route_table_id = "${aws_vpc.default.main_route_table_id}"
 }
 
-# Associate subnet private_1_subnet_eu_west_1a to private route table
 resource "aws_route_table_association" "private_subnet_association" {
   subnet_id      = "${aws_subnet.private.id}"
   route_table_id = "${aws_route_table.private_route_table.id}"

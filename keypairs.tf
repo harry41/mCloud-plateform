@@ -1,7 +1,5 @@
 resource "aws_key_pair" "auth" {
-  key_name = "${var.project}_deploy_key"
-
-  #key_name   = "${var.key_name}"
+  key_name   = "${var.project}_deploy_key"
   public_key = "${file(var.public_key_file)}"
 }
 

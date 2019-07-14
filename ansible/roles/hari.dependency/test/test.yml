@@ -1,0 +1,35 @@
+# ansible/playbook/empower.yml
+---
+- name: Installing Test Environment
+  hosts: web
+  #user: ubuntu
+  become: true
+
+  # These variables required to install nginx web server. you can add aditinal ppa in dependant_repo_url and editional packages in install_dependant_packages list.
+  vars:
+    dependant_repo_url:
+      - ppa:ondrej/php
+
+    install_dependant_packages:
+      - software-properties-common
+      - nginx
+      - mysql-client
+      - git
+      - php{{ php_version }}
+      - php{{ php_version }}-cli
+      - php{{ php_version }}-common
+      - php{{ php_version }}-mbstring
+      - php{{ php_version }}-gd
+      - php{{ php_version }}-intl
+      - php{{ php_version }}-xml
+      - php{{ php_version }}-mysql
+      - php{{ php_version }}-zip
+      - php{{ php_version }}-fpm
+      - php{{ php_version }}-bcmath
+      - php{{ php_version }}-curl
+      - php{{ php_version }}-xmlrpc
+
+
+# Below roles will be execute.
+  roles:
+      - hari.dependency

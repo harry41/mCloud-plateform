@@ -1,0 +1,49 @@
+#MySql.server/tasks/main.yml
+---
+
+# - name: Creates directory for project
+#   file: path={{ web_directory }} state=directory owner={{ app_user }} group={{ app_user_group }} mode=0775
+
+- name: create directory if they don't exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user_group }}"
+    mode: 0775
+  with_items:
+    - "{{ web_directory }}/{{ python_app_name }}"
+
+- name: Configure gunicorn_start script
+  template:
+    src=templates/gunicorn_start.j2
+    dest={{ web_directory }}/gunicorn_start
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0775
+
+- name: Configure nginx configs
+  template:
+    src=templates/nginx_config.j2
+    dest=/etc/nginx/sites-available/{{ web_app_name }}
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0644
+
+- name: remove sites-enabled/default
+  file: path='/etc/nginx/sites-enabled/default' state=absent
+
+- name: Configure Nginx site configs for {{ web_app_name }} as enabled
+  file: src=/etc/nginx/sites-available/{{ web_app_name }} dest=/etc/nginx/sites-enabled/{{ web_app_name }} owner=www-data group=www-data state=link
+
+- name: Configure gunicorn configs
+  template:
+    src=templates/gunicorn_config.j2
+    dest=/etc/supervisor/conf.d/{{ web_app_name }}_app.conf
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0644
+
+  notify:
+    - restart supervisor
+    - restart nginx

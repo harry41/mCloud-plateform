@@ -1,0 +1,14 @@
+#MySql.server/tasks/main.yml
+---
+
+- name: Adding dependant ppa
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ dependant_repo_url }}"
+
+- name: Installing dependant packages
+  apt: name={{ item }} state=present force=yes update_cache=yes cache_valid_time=3600
+  become: yes
+  with_items: "{{ install_dependant_packages }}"

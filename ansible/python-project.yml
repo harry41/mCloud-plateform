@@ -1,0 +1,46 @@
+# ansible/playbook/jenkins.yml
+---
+- name: Install Python Project - Nginx+Gunicorn+Postgresql+Supervisor Environment
+  hosts: app
+  #user: ubuntu
+  become: true
+  # become_method: sudo
+  vars:
+    python_app_name: helloworld
+    virtualenv_version: python3
+    requirement_txt_path: "{{ python_app_dir }}/requirements.txt"
+    #domain_name: HarryTheDevopsGuy.ml
+    app_user: ubuntu
+    app_user_group: ubuntu
+    number_of_worker: '3'
+    web_app_name: "mCloud"
+
+    # This will install python Packages in virtual environment.
+    install_python_packages:
+      - gunicorn
+
+    dependant_repo_url:
+      - ppa:ondrej/php
+
+    install_dependant_packages:
+      - software-properties-common
+      - unzip
+      - nginx
+      - python-pip
+      - python-dev
+      - python3-dev
+      - build-essential
+      - libpq-dev
+      - virtualenv
+      - virtualenvwrapper
+      - supervisor
+      - python-psycopg2
+      - libmysqlclient-dev
+      - python-mysqldb
+      - python3-pip
+      - python3-virtualenv
+      - sqlitebrowser
+
+  roles:
+      - hari.dependency
+      - Hari.Python-Project

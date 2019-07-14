@@ -1,0 +1,16 @@
+# This will use to deploy Python Application
+---
+
+- name: Initializing Python App - {{ python_app_name }}
+  shell: |
+      source {{ venv }}/bin/activate
+      cd {{ python_app_dir }}
+      rm -rf {{ web_directory }}/piplist.txt
+      {{ venv }}/bin/pip list >> {{ web_directory }}/piplist.txt
+      {{ venv }}/bin/python {{ python_app_dir }}/manage.py makemigrations
+      {{ venv }}/bin/python {{ python_app_dir }}/manage.py migrate
+
+
+  notify:
+    - restart supervisor
+    - restart nginx

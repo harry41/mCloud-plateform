@@ -35,10 +35,10 @@ resource "aws_db_instance" "db_instance" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  name       = "maingroup"
+  name       = "mainsg"
   subnet_ids = ["${aws_subnet.public.id}", "${aws_subnet.private.id}"]
 
   tags = {
-    Name = "My DB subnet group"
+    Name = "${var.project}_default_subnet_group"
   }
 }

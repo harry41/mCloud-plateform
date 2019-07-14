@@ -1,0 +1,14 @@
+---
+# web_directory: /var/www/html/{{ web_app_name }}
+# python_app_name: python_app_name
+# domain_name: PROJECT_DOMAIN_NAME
+# app_user: ubuntu
+# app_user_group: ubuntu
+# number_of_worker: '3'
+# virtualenv_version: python3.5
+
+web_directory: "/var/www/html/{{ web_app_name }}"
+python_app_zip_path: "files/{{ web_app_name }}.zip"
+venv: "{{ web_directory }}/venv"
+python_app_dir: "{{ web_directory }}/{{ python_app_name }}"
+# celery_env_file: "/etc/default/celeryd"

@@ -1,0 +1,8 @@
+---
+  # ansible -m setup web
+- hosts: all
+  # user: ubuntu
+  gather_facts: no
+  tasks:
+  - name: ping all hosts
+    ping:

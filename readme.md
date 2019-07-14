@@ -37,8 +37,8 @@ export TF_VAR_RDS_DB_ALLOCATED_STORAGE="8"
 This is completely automated infrastructure. complete infrastructure will up and running with below commands.
 
 ```bash
-git clone repository_url
-cd clone directory
+git clone https://github.com/harry41/mCloud-plateform.git
+cd mCloud-plateform/
 # To initialized terraform
 terraform init
 # To test code and dry run.
@@ -62,11 +62,20 @@ run below commands to access your server.
 ssh -F secrets/ssh_config APP_SERVER_PRIVATE_IP
 ```
 
+
+
 #### Application Deployment
 
+grep  **`APP_SERVER_PRIVATE_IP`**  and update ansible hosts file `ansible/hosts/hosts` replace old ip with new private ip.
+
 ```bash
-ansible-playbook -i hosts application.yml
+cd ansible
+# To ping private host
+ansible-playbook test.yml
+# To deploy hello world django application
+ansible-playbook python-project.yml
 ```
+if above ansible playbook executed successfully. it means you have deployed a secure infrastructure on aws cloud. now it's time to access site url (LOAD_BALANCER_ENDPOINT).
 
 #### let's see magic
 

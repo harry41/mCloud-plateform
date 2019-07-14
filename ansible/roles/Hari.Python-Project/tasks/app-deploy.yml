@@ -1,0 +1,45 @@
+# This will use to deploy Python Application
+---
+
+# - name: Copy .env file in your project - {{ python_app_name }}
+#   template:
+#     src="templates/env.secret"
+#     dest="{{ python_app_dir }}/.env"
+#     owner={{ app_user }}
+#     group={{ app_user_group }}
+#     mode=0644
+
+- name: Copy Your Python Application {{ python_app_name }}
+  copy:
+    src="{{ python_app_zip_path }}"
+    dest="/tmp/{{ python_app_name }}.zip"
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0775
+
+- name: Extracting - {{ python_app_name }}.zip on server.
+  unarchive:
+    src: /tmp/{{ python_app_name }}.zip
+    dest: "{{ web_directory }}"
+    remote_src: yes
+
+- name: Create virtualenv for {{ python_app_name }}.
+  pip:
+    requirements: "{{ requirement_txt_path }}"
+    virtualenv: "{{ venv }}"
+    virtualenv_python: "{{ virtualenv_version }}"
+
+- name: Install Gunicorn for {{ python_app_name }}.
+  pip:
+    name: "{{ item }}"
+    virtualenv: "{{ venv }}"
+    virtualenv_python: "{{ virtualenv_version }}"
+  with_items: "{{ install_python_packages }}"
+
+- name: Setting Directory Permission for {{ python_app_name }}.
+  file:
+    dest: "{{ web_directory }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user_group }}"
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes

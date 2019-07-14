@@ -1,0 +1,8 @@
+# This will use to deploy Python Application
+---
+- name: Create postgres user and database for {{ python_app_name }}
+  shell: |
+      sudo -u postgres psql -c "CREATE USER harry WITH PASSWORD 'harry123';"
+      sudo -u postgres psql -c "CREATE DATABASE test_app_db;"
+      sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE test_app_db to harry;"
+  
